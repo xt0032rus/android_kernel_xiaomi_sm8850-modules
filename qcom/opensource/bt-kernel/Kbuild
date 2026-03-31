@@ -1,0 +1,5 @@
+ifeq ($(CONFIG_MSM_BT_POWER),m)
+KBUILD_CPPFLAGS += -DCONFIG_MSM_BT_POWER
+endif
+
+obj-$(CONFIG_MSM_BT_POWER) += pwr/

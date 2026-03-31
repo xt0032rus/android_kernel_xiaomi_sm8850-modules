@@ -1,0 +1,42 @@
+load("//build/kernel/kleaf:kernel.bzl", "ddk_headers")
+
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files", "strip_prefix")
+load("@rules_pkg//pkg:install.bzl", "pkg_install")
+
+load(":target.bzl", "define_autogvm")
+
+ddk_headers(
+    name = "btfmcodec_headers",
+    hdrs = glob([
+        "btfmcodec/include/*.h"
+    ]),
+    includes = ["btfmcodec/include"]
+)
+
+define_autogvm()
+
+pkg_files(
+    name = "autogvm_consolidate_dist_files",
+    srcs = [":autogvm_consolidate"],
+    strip_prefix = strip_prefix.files_only(),
+    visibility = ["//visibility:private"],
+)
+
+pkg_install(
+    name = "autogvm_consolidate_dist",
+    srcs = [":autogvm_consolidate_dist_files"],
+    destdir = "out/target/product/autogvm/dlkm/lib/modules",
+)
+
+pkg_files(
+    name = "autogvm_perf_dist_files",
+    srcs = [":autogvm_perf"],
+    strip_prefix = strip_prefix.files_only(),
+    visibility = ["//visibility:private"],
+)
+
+pkg_install(
+    name = "autogvm_perf_dist",
+    srcs = [":autogvm_perf_dist_files"],
+    destdir = "out/target/product/autogvm/dlkm/lib/modules",
+)
